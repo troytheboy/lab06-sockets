@@ -4,9 +4,19 @@ var ip = require("ip");
 ;
 var server = net.createServer();
 server.on('connection', function (socket) {
+    socket.write('Hello you!\n');
     socket.on('data', function (data) {
+        var echo = data.toString().toUpperCase();
+        if (echo === 'EXIT') {
+            socket.write("Goodbye!");
+            socket.end();
+        }
+        else {
+            socket.write("Did you say '" + echo + "'?");
+        }
     });
     socket.on('close', function () {
+        socket.end();
     });
 });
 server.on('listening', function () {

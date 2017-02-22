@@ -10,13 +10,24 @@ let server:net.Server = net.createServer();
 // when the server is connected
 server.on('connection', function(socket:net.Socket){
 
+    socket.write('Hello you!\n');
     // when data is sent to the socket
     socket.on('data', function(data){
-        //
+        //process data
+       var echo = data.toString().toUpperCase();
+
+       if(echo === 'EXIT') {
+          socket.write("Goodbye!");
+          socket.end();
+       }
+       else {
+          socket.write("Did you say '"+echo+"'?");
+       }
     });
 
     socket.on('close', function(){
         // handle client disconnecting
+        socket.end();
     })
 
 
